@@ -1,4 +1,3 @@
-cat <<EOF > .gitignore
 # Terraform
 .terraform/
 *.tfstate
@@ -10,7 +9,7 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+app/application.log
 
 # OS
 .DS_Store
-EOF

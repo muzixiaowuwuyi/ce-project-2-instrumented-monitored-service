@@ -60,7 +60,7 @@ module "web_sg" {
       to_port     = 22
       protocol    = "tcp"
       description = "SSH access"
-      cidr_blocks = "0.0.0.0/0"
+      cidr_blocks = "178.27.203.22/32"
     },
     {
       from_port   = 8000

@@ -1,0 +1,6 @@
+fastapi==0.111.0
+uvicorn==0.30.1
+python-json-logger==2.0.7
+boto3==1.34.100
+Flask==3.0.2
+structlog==24.1.0
