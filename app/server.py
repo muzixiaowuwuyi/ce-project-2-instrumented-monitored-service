@@ -103,11 +103,11 @@ cw = boto3.client("cloudwatch", region_name=REGION)
 # 3. 结构化日志配置 (Structlog)
 # -----------------------------
 # 精确匹配你在 EC2 上的真实日志绝对路径
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-LOG_FILE_PATH = os.path.join(CURRENT_DIR, 'application.log')
-os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
+# CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# LOG_FILE_PATH = os.path.join(CURRENT_DIR, 'application.log')
+# os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
 
-# LOG_FILE_PATH = '/home/ubuntu/ce-project-2-instrumented-monitored-service/app/application.log'
+LOG_FILE_PATH = '/home/ubuntu/ce-project-2-instrumented-monitored-service/app/application.log'
 
 logging.basicConfig(
     filename=LOG_FILE_PATH,
