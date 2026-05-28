@@ -1,76 +1,3 @@
-# import time
-# import uuid
-# import logging
-# from fastapi import FastAPI, Request, Response
-# from app.utils.logger import setup_logger
-
-# app = FastAPI()
-# logger = setup_logger()
-
-# # ==========================================
-# # 核心：中间件拦截器（实现 Request Tracking 与耗时计算）
-# # ==========================================
-# @app.middleware("http")
-# async def log_requests(request: Request, call_next):
-#     start_time = time.time()
-    
-#     # 1. 尝试从请求头获取 Correlation ID，没有则自动生成一个
-#     correlation_id = request.headers.get("X-Correlation-ID", str(uuid.uuid4()))
-    
-#     # 2. 将路由上下文信息封装进一个字典，方便随日志输出
-#     log_extra = {
-#         "correlation_id": correlation_id,
-#         "path": request.url.path,
-#         "method": request.method,
-#         "status_code": 200,
-#         "latency_ms": 0.0
-#     }
-    
-#     try:
-#         response = await call_next(request)
-        
-#         # 3. 计算耗时
-#         process_time = (time.time() - start_time) * 1000
-#         log_extra["status_code"] = response.status_code
-#         log_extra["latency_ms"] = round(process_time, 2)
-        
-#         # 将 Correlation ID 注入回 Response Header 方便客户端排查
-#         response.headers["X-Correlation-ID"] = correlation_id
-        
-#         # 4. 根据不同状态码打印不同级别的结构化日志
-#         if response.status_code >= 500:
-#             logger.error(f"Request failed with status {response.status_code}", extra=log_extra)
-#         elif response.status_code >= 400:
-#             logger.warning(f"Client error with status {response.status_code}", extra=log_extra)
-#         else:
-#             logger.info("Request processed successfully", extra=log_extra)
-            
-#         return response
-
-#     except Exception as e:
-#         # 如果捕获到未处理的应用程序崩溃异常
-#         process_time = (time.time() - start_time) * 1000
-#         log_extra["status_code"] = 500
-#         log_extra["latency_ms"] = round(process_time, 2)
-#         logger.error(f"Unhandled server exception: {str(e)}", extra=log_extra)
-#         return Response(content="Internal Server Error", status_code=500)
-
-# # ==========================================
-# # 业务接口定义 (Must Have 需求)
-# # ==========================================
-# @app.get("/health")
-# def health_check():
-#     return {"status": "healthy"}
-
-# @app.post("/orders")
-# def create_order():
-#     # 模拟订单逻辑
-#     return {"order_id": str(uuid.uuid4().hex[:10]), "status": "created", "amount": 99.9}
-
-# @app.get("/orders/{order_id}")
-# def get_order(order_id: str):
-#     return {"order_id": order_id, "status": "shipped"}
-
 import os
 import logging
 import structlog
@@ -103,10 +30,6 @@ cw = boto3.client("cloudwatch", region_name=REGION)
 # 3. 结构化日志配置 (Structlog)
 # -----------------------------
 # 精确匹配你在 EC2 上的真实日志绝对路径
-# CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-# LOG_FILE_PATH = os.path.join(CURRENT_DIR, 'application.log')
-# os.makedirs(os.path.dirname(LOG_FILE_PATH), exist_ok=True)
-
 LOG_FILE_PATH = '/home/ubuntu/ce-project-2-instrumented-monitored-service/app/application.log'
 
 logging.basicConfig(
