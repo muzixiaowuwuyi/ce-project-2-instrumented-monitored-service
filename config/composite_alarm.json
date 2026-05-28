@@ -1,0 +1,9 @@
+{
+  "AlarmName": "CombinedSystemOutageCriticalAlarm",
+  "AlarmDescription": "COMPOSITE: Major System Outage. Both high latency and high 5xx error rates are sustained simultaneously.",
+  "ActionsEnabled": true,
+  "AlarmActions": [
+    "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+  ],
+  "AlarmRule": "ALARM(AppLatencyWarningAlarm) AND ALARM(Http5xxCriticalAlarm)"
+}

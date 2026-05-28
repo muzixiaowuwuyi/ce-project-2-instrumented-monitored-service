@@ -591,6 +591,16 @@
           ]
         }
       }
+    },
+    {
+    "type": "text",
+    "x": 0,
+    "y": 34,
+    "width": 24,
+    "height": 2,
+    "properties": {
+        "markdown": "## 💸 FinOps & Cloud Cost Governance\n* **Budget Target:** $5.00 / month (Free Tier Guardrails Active)\n* **Active Regions:** `eu-central-1` (Frankfurt) | **Instance Types:** `t3.micro` (Free Tier Eligible)\n* **Cost Control Link:** [AWS Billing & Cost Management Console](https://billing.console.aws.amazon.com/v2/home)"
     }
+}
     ]
 }
