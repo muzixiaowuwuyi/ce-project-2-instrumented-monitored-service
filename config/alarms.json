@@ -1,0 +1,89 @@
+[
+  {
+    "AlarmName": "Http5xxCriticalAlarm",
+    "AlarmDescription": "CRITICAL: High rate of 500 Internal Server Errors detected on Flask API. Immediate incident response required.",
+    "ActionsEnabled": true,
+    "AlarmActions": [
+      "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+    ],
+    "MetricName": "ErrorCount",
+    "Namespace": "Observability/AppMetrics",
+    "Statistic": "Sum",
+    "Period": 60,
+    "EvaluationPeriods": 1,
+    "Threshold": 10.0,
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "TreatMissingData": "notBreaching"
+  },
+  {
+    "AlarmName": "AppLatencyWarningAlarm",
+    "AlarmDescription": "WARNING: P95 Application Latency breached SLO Target (500ms) for 3 consecutive minutes.",
+    "ActionsEnabled": true,
+    "AlarmActions": [
+      "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+    ],
+    "MetricName": "LatencyMs",
+    "Namespace": "Observability/AppMetrics",
+    "ExtendedStatistic": "p95",
+    "Period": 60,
+    "EvaluationPeriods": 3,
+    "Threshold": 500.0,
+    "ComparisonOperator": "GreaterThanThreshold",
+    "TreatMissingData": "missing"
+  },
+  {
+    "AlarmName": "BruteForceCredentialSprayingAlarm",
+    "AlarmDescription": "CRITICAL: Security Audit triggered. More than 5 failed login attempts (401) within 1 minute on /user/login.",
+    "ActionsEnabled": true,
+    "AlarmActions": [
+      "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+    ],
+    "MetricName": "RequestCount",
+    "Namespace": "Observability/AppMetrics",
+    "Statistic": "Sum",
+    "Period": 60,
+    "EvaluationPeriods": 1,
+    "Threshold": 5.0,
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+      { "Name": "Endpoint", "Value": "/user/login" },
+      { "Name": "HttpStatus", "Value": "401" }
+    ],
+    "TreatMissingData": "notBreaching"
+  },
+  {
+    "AlarmName": "HostCpuWarningAlarm",
+    "AlarmDescription": "WARNING: EC2 Infrastructure Host CPU Utilization is continuously high (>= 80%). Check for potential data loop bottlenecks.",
+    "ActionsEnabled": true,
+    "AlarmActions": [
+      "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+    ],
+    "MetricName": "CPUUtilization",
+    "Namespace": "AWS/EC2",
+    "Statistic": "Average",
+    "Period": 60,
+    "EvaluationPeriods": 5,
+    "Threshold": 80.0,
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "TreatMissingData": "missing"
+  },
+  {
+    "AlarmName": "BusinessFunnelCheckoutDropAlarm",
+    "AlarmDescription": "WARNING: Zero completed checkouts in the last minute while traffic exists. Potential payment gateway or frontend conversion breakage.",
+    "ActionsEnabled": true,
+    "AlarmActions": [
+      "arn:aws:sns:eu-central-1:218852529000:Project-Alerts-Topic"
+    ],
+    "MetricName": "RequestCount",
+    "Namespace": "Observability/AppMetrics",
+    "Statistic": "Sum",
+    "Period": 60,
+    "EvaluationPeriods": 1,
+    "Threshold": 0.0,
+    "ComparisonOperator": "LessThanOrEqualToThreshold",
+    "Dimensions": [
+      { "Name": "Endpoint", "Value": "/checkout" }
+    ],
+    "TreatMissingData": "breaching"
+  }
+]

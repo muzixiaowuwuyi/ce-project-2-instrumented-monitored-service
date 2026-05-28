@@ -1,0 +1,596 @@
+{
+    "widgets": [
+        {
+            "type": "text",
+            "x": 0,
+            "y": 0,
+            "width": 24,
+            "height": 2,
+            "properties": {
+                "markdown": "# 🌐 Instrumented & Monitored Cloud Service Observability Dashboard\n**Environment:** Production | **Region:** eu-central-1 | **Application:** CloudWatch Monitored Flask Service\n\n**Quick Links:** [Log Insights](https://console.aws.amazon.com/cloudwatch/home?region=eu-central-1#logsV2:log-groups) | **SOP Runbook:** [Chaos Engineering & Metrics Verification Documentation](https://github.com)"
+            }
+        },
+        {
+            "type": "text",
+            "x": 0,
+            "y": 2,
+            "width": 24,
+            "height": 1,
+            "properties": {
+                "markdown": "## 🚨 Top-Level Health Overview (KPI Cards)"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "Total Traffic Volume (1 min)",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "RequestCount",
+                        {
+                            "stat": "Sum",
+                            "period": 60,
+                            "label": "Requests/Min",
+                            "color": "#1f77b4"
+                        }
+                    ]
+                ],
+                "view": "singleValue",
+                "region": "eu-central-1"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "Application Error Rate (%)",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "ErrorCount",
+                        {
+                            "id": "m1",
+                            "visible": false,
+                            "stat": "Sum"
+                        }
+                    ],
+                    [
+                        ".",
+                        "RequestCount",
+                        {
+                            "id": "m2",
+                            "visible": false,
+                            "stat": "Sum"
+                        }
+                    ],
+                    [
+                        {
+                            "expression": "FILL(m1,0)/m2*100",
+                            "label": "Error Rate %",
+                            "id": "e1",
+                            "color": "#d13212"
+                        }
+                    ]
+                ],
+                "view": "singleValue",
+                "region": "eu-central-1",
+                "period": 60
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 3,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "P95 Application Latency",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "LatencyMs",
+                        {
+                            "stat": "p95",
+                            "label": "P95 Response",
+                            "color": "#ff7f0e"
+                        }
+                    ]
+                ],
+                "view": "singleValue",
+                "region": "eu-central-1",
+                "period": 60
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 3,
+            "width": 6,
+            "height": 3,
+            "properties": {
+                "title": "Data Pipeline Max Rows Processed",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "ProcessedRowsCount",
+                        {
+                            "stat": "Maximum",
+                            "label": "Max Rows/Min",
+                            "color": "#2ca02c"
+                        }
+                    ]
+                ],
+                "view": "singleValue",
+                "region": "eu-central-1",
+                "period": 60
+            }
+        },
+        {
+            "type": "text",
+            "x": 0,
+            "y": 6,
+            "width": 24,
+            "height": 1,
+            "properties": {
+                "markdown": "## 📊 Application Golden Signals Trend"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 7,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Traffic - Request Volume Breakdown by Endpoint",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "RequestCount",
+                        "Endpoint",
+                        "/products",
+                        {
+                            "stat": "Sum",
+                            "label": "/products"
+                        }
+                    ],
+                    [
+                        "...",
+                        "Endpoint",
+                        "/checkout",
+                        {
+                            "stat": "Sum",
+                            "label": "/checkout"
+                        }
+                    ],
+                    [
+                        "...",
+                        "Endpoint",
+                        "/user/login",
+                        {
+                            "stat": "Sum",
+                            "label": "/user/login"
+                        }
+                    ],
+                    [
+                        "...",
+                        "Endpoint",
+                        "/analytics/report",
+                        {
+                            "stat": "Sum",
+                            "label": "/analytics/report"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Total Requests",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 8,
+            "y": 7,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Latency - Percentiles Response Time Trend (SLO Target)",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "LatencyMs",
+                        {
+                            "stat": "Average",
+                            "label": "Avg Latency"
+                        }
+                    ],
+                    [
+                        "...",
+                        {
+                            "stat": "p95",
+                            "label": "P95 Latency"
+                        }
+                    ],
+                    [
+                        "...",
+                        {
+                            "stat": "p99",
+                            "label": "P99 Latency"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "label": "Milliseconds"
+                    }
+                },
+                "annotations": {
+                    "horizontal": [
+                        {
+                            "value": 500,
+                            "label": "SLO Warning (500ms)",
+                            "fill": "above",
+                            "color": "#ff7f0e"
+                        },
+                        {
+                            "value": 2000,
+                            "label": "SLO Critical (2s Chaos Level)",
+                            "fill": "above",
+                            "color": "#d13212"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 16,
+            "y": 7,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Errors - Client Status (401) vs System Failures (ErrorCount)",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "ErrorCount",
+                        {
+                            "stat": "Sum",
+                            "color": "#d13212",
+                            "label": "Internal Server Errors (500)"
+                        }
+                    ],
+                    [
+                        "Observability/AppMetrics",
+                        "RequestCount",
+                        "Endpoint",
+                        "/user/login",
+                        "HttpStatus",
+                        "401",
+                        {
+                            "stat": "Sum",
+                            "color": "#ff7f0e",
+                            "label": "Login Failures (401)"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "stacked": false,
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count"
+                    }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "x": 0,
+            "y": 13,
+            "width": 24,
+            "height": 1,
+            "properties": {
+                "markdown": "## 💻 EC2 Host Infrastructure Saturation (Resource Utilization)"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 5,
+            "properties": {
+                "title": "Host CPU Utilization",
+                "metrics": [
+                    [
+                        "AWS/EC2",
+                        "CPUUtilization",
+                        {
+                            "stat": "Average",
+                            "label": "Host CPU %",
+                            "color": "#9467bd"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 100,
+                        "label": "%"
+                    }
+                },
+                "annotations": {
+                    "horizontal": [
+                        {
+                            "value": 80,
+                            "label": "CPU Saturation Alert",
+                            "fill": "above",
+                            "color": "#e377c2"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 14,
+            "width": 6,
+            "height": 5,
+            "properties": {
+                "title": "CloudWatch Agent - Memory Used Percent",
+                "metrics": [
+                    [
+                        "CWAgent",
+                        "mem_used_percent",
+                        {
+                            "stat": "Average",
+                            "label": "Memory %",
+                            "color": "#bcbd22"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 100,
+                        "label": "%"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 14,
+            "width": 6,
+            "height": 5,
+            "properties": {
+                "title": "Network IO Throughput",
+                "metrics": [
+                    [
+                        "AWS/EC2",
+                        "NetworkIn",
+                        {
+                            "stat": "Sum",
+                            "label": "Bytes In"
+                        }
+                    ],
+                    [
+                        ".",
+                        "NetworkOut",
+                        {
+                            "stat": "Sum",
+                            "label": "Bytes Out"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 14,
+            "width": 6,
+            "height": 5,
+            "properties": {
+                "title": "CloudWatch Agent - Disk Space Used",
+                "metrics": [
+                    [
+                        "CWAgent",
+                        "disk_used_percent",
+                        {
+                            "stat": "Average",
+                            "label": "Disk %",
+                            "color": "#17becf"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 100,
+                        "label": "%"
+                    }
+                }
+            }
+        },
+        {
+            "type": "text",
+            "x": 0,
+            "y": 19,
+            "width": 24,
+            "height": 1,
+            "properties": {
+                "markdown": "## 🔍 Full-Stack Multi-Dimensional Root Cause Correlation View"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 20,
+            "width": 24,
+            "height": 7,
+            "properties": {
+                "title": "Cascading Pattern: Application Latency (Left) vs Traffic & Errors & Host CPU (Right)",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "LatencyMs",
+                        {
+                            "stat": "p95",
+                            "yAxis": "left",
+                            "label": "App Latency P95 (ms)",
+                            "color": "#ff7f0e"
+                        }
+                    ],
+                    [
+                        ".",
+                        "RequestCount",
+                        {
+                            "stat": "Sum",
+                            "yAxis": "right",
+                            "label": "Traffic (Req/min)",
+                            "color": "#1f77b4"
+                        }
+                    ],
+                    [
+                        ".",
+                        "ErrorCount",
+                        {
+                            "stat": "Sum",
+                            "yAxis": "right",
+                            "label": "500 Critical Errors",
+                            "color": "#d13212"
+                        }
+                    ],
+                    [
+                        "AWS/EC2",
+                        "CPUUtilization",
+                        {
+                            "stat": "Average",
+                            "yAxis": "right",
+                            "label": "Host CPU %",
+                            "color": "#9467bd"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60
+            }
+        },
+    {
+      "type": "text",
+      "x": 0,
+      "y": 27,
+      "width": 24,
+      "height": 1,
+      "properties": {
+        "markdown": "## 💼 DataOps Business Flow & Data Pipeline Performance"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 28,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Business Funnel: Product Browsing vs Actual Checkout",
+        "metrics": [
+          ["Observability/AppMetrics", "RequestCount", "Endpoint", "/products", { "stat": "Sum", "label": "Browse Products (Top of Funnel)", "color": "#1f77b4" }],
+          ["...", "Endpoint", "/checkout", { "stat": "Sum", "label": "Purchase Checkout (Conversion)", "color": "#2ca02c" }]
+        ],
+        "view": "timeSeries",
+        "region": "eu-central-1",
+        "period": 60,
+        "yAxis": {
+          "left": {
+            "label": "Operations / Min"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 28,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Data Pipeline Velocity: Rows Processed Trend",
+        "metrics": [
+          ["Observability/AppMetrics", "ProcessedRowsCount", { "stat": "Sum", "label": "Total Rows Decoded", "color": "#9467bd" }],
+          ["...", { "stat": "Maximum", "label": "Peak Row Velocity/Min", "color": "#bcbd22" }]
+        ],
+        "view": "timeSeries",
+        "region": "eu-central-1",
+        "period": 60,
+        "yAxis": {
+          "left": {
+            "label": "Rows Count"
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 28,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Security Audit: Credential Spraying / Unauthorized Attempt Rate",
+        "metrics": [
+          ["Observability/AppMetrics", "RequestCount", "Endpoint", "/user/login", "HttpStatus", "401", { "stat": "Sum", "label": "Blocked 401 Unauthorized Attacks", "color": "#d13212" }]
+        ],
+        "view": "timeSeries",
+        "region": "eu-central-1",
+        "period": 60,
+        "yAxis": {
+          "left": {
+            "label": "Failed Retries / Min"
+          }
+        },
+        "annotations": {
+          "horizontal": [
+            { "value": 5, "label": "Brute Force Attack Alert Threshold", "color": "#d13212", "fill": "above" }
+          ]
+        }
+      }
+    }
+    ]
+}
