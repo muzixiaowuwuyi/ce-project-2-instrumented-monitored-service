@@ -157,36 +157,44 @@
                         "RequestCount",
                         "Endpoint",
                         "/products",
+                        "HttpStatus",
+                        "200",
                         {
                             "stat": "Sum",
-                            "label": "/products"
+                            "label": "/products (Success)"
                         }
                     ],
                     [
                         "...",
                         "Endpoint",
                         "/checkout",
+                        "HttpStatus",
+                        "200",
                         {
                             "stat": "Sum",
-                            "label": "/checkout"
+                            "label": "/checkout (Success)"
                         }
                     ],
                     [
                         "...",
                         "Endpoint",
                         "/user/login",
+                        "HttpStatus",
+                        "200",
                         {
                             "stat": "Sum",
-                            "label": "/user/login"
+                            "label": "/user/login (Success)"
                         }
                     ],
                     [
                         "...",
                         "Endpoint",
                         "/analytics/report",
+                        "HttpStatus",
+                        "200",
                         {
                             "stat": "Sum",
-                            "label": "/analytics/report"
+                            "label": "/analytics/report (Success)"
                         }
                     ]
                 ],
@@ -479,6 +487,10 @@
                     [
                         ".",
                         "RequestCount",
+                        "Endpoint",
+                        "/products",
+                        "HttpStatus",
+                        "200",
                         {
                             "stat": "Sum",
                             "yAxis": "right",
@@ -512,95 +524,146 @@
                 "period": 60
             }
         },
-    {
-      "type": "text",
-      "x": 0,
-      "y": 27,
-      "width": 24,
-      "height": 1,
-      "properties": {
-        "markdown": "## 💼 DataOps Business Flow & Data Pipeline Performance"
-      }
-    },
-    {
-      "type": "metric",
-      "x": 0,
-      "y": 28,
-      "width": 8,
-      "height": 6,
-      "properties": {
-        "title": "Business Funnel: Product Browsing vs Actual Checkout",
-        "metrics": [
-          ["Observability/AppMetrics", "RequestCount", "Endpoint", "/products", { "stat": "Sum", "label": "Browse Products (Top of Funnel)", "color": "#1f77b4" }],
-          ["...", "Endpoint", "/checkout", { "stat": "Sum", "label": "Purchase Checkout (Conversion)", "color": "#2ca02c" }]
-        ],
-        "view": "timeSeries",
-        "region": "eu-central-1",
-        "period": 60,
-        "yAxis": {
-          "left": {
-            "label": "Operations / Min"
-          }
-        }
-      }
-    },
-    {
-      "type": "metric",
-      "x": 8,
-      "y": 28,
-      "width": 8,
-      "height": 6,
-      "properties": {
-        "title": "Data Pipeline Velocity: Rows Processed Trend",
-        "metrics": [
-          ["Observability/AppMetrics", "ProcessedRowsCount", { "stat": "Sum", "label": "Total Rows Decoded", "color": "#9467bd" }],
-          ["...", { "stat": "Maximum", "label": "Peak Row Velocity/Min", "color": "#bcbd22" }]
-        ],
-        "view": "timeSeries",
-        "region": "eu-central-1",
-        "period": 60,
-        "yAxis": {
-          "left": {
-            "label": "Rows Count"
-          }
-        }
-      }
-    },
-    {
-      "type": "metric",
-      "x": 16,
-      "y": 28,
-      "width": 8,
-      "height": 6,
-      "properties": {
-        "title": "Security Audit: Credential Spraying / Unauthorized Attempt Rate",
-        "metrics": [
-          ["Observability/AppMetrics", "RequestCount", "Endpoint", "/user/login", "HttpStatus", "401", { "stat": "Sum", "label": "Blocked 401 Unauthorized Attacks", "color": "#d13212" }]
-        ],
-        "view": "timeSeries",
-        "region": "eu-central-1",
-        "period": 60,
-        "yAxis": {
-          "left": {
-            "label": "Failed Retries / Min"
-          }
+        {
+            "type": "text",
+            "x": 0,
+            "y": 27,
+            "width": 24,
+            "height": 1,
+            "properties": {
+                "markdown": "## 💼 DataOps Business Flow & Data Pipeline Performance"
+            }
         },
-        "annotations": {
-          "horizontal": [
-            { "value": 5, "label": "Brute Force Attack Alert Threshold", "color": "#d13212", "fill": "above" }
-          ]
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 28,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Business Funnel: Product Browsing vs Actual Checkout",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "RequestCount",
+                        "Endpoint",
+                        "/products",
+                        {
+                            "stat": "Sum",
+                            "label": "Browse Products (Top of Funnel)",
+                            "color": "#1f77b4"
+                        }
+                    ],
+                    [
+                        "...",
+                        "Endpoint",
+                        "/checkout",
+                        {
+                            "stat": "Sum",
+                            "label": "Purchase Checkout (Conversion)",
+                            "color": "#2ca02c"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Operations / Min"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 8,
+            "y": 28,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Data Pipeline Velocity: Rows Processed Trend",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "ProcessedRowsCount",
+                        {
+                            "stat": "Sum",
+                            "label": "Total Rows Decoded",
+                            "color": "#9467bd"
+                        }
+                    ],
+                    [
+                        "...",
+                        {
+                            "stat": "Maximum",
+                            "label": "Peak Row Velocity/Min",
+                            "color": "#bcbd22"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Rows Count"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 16,
+            "y": 28,
+            "width": 8,
+            "height": 6,
+            "properties": {
+                "title": "Security Audit: Credential Spraying / Unauthorized Attempt Rate",
+                "metrics": [
+                    [
+                        "Observability/AppMetrics",
+                        "RequestCount",
+                        "Endpoint",
+                        "/user/login",
+                        "HttpStatus",
+                        "401",
+                        {
+                            "stat": "Sum",
+                            "label": "Blocked 401 Unauthorized Attacks",
+                            "color": "#d13212"
+                        }
+                    ]
+                ],
+                "view": "timeSeries",
+                "region": "eu-central-1",
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Failed Retries / Min"
+                    }
+                },
+                "annotations": {
+                    "horizontal": [
+                        {
+                            "value": 5,
+                            "label": "Brute Force Attack Alert Threshold",
+                            "color": "#d13212",
+                            "fill": "above"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "text",
+            "x": 0,
+            "y": 34,
+            "width": 24,
+            "height": 2,
+            "properties": {
+                "markdown": "## 💸 FinOps & Cloud Cost Governance\n* **Budget Target:** $5.00 / month (Free Tier Guardrails Active)\n* **Active Regions:** `eu-central-1` (Frankfurt) | **Instance Types:** `t3.micro` (Free Tier Eligible)\n* **Cost Control Link:** [AWS Billing & Cost Management Console](https://billing.console.aws.amazon.com/v2/home)"
+            }
         }
-      }
-    },
-    {
-    "type": "text",
-    "x": 0,
-    "y": 34,
-    "width": 24,
-    "height": 2,
-    "properties": {
-        "markdown": "## 💸 FinOps & Cloud Cost Governance\n* **Budget Target:** $5.00 / month (Free Tier Guardrails Active)\n* **Active Regions:** `eu-central-1` (Frankfurt) | **Instance Types:** `t3.micro` (Free Tier Eligible)\n* **Cost Control Link:** [AWS Billing & Cost Management Console](https://billing.console.aws.amazon.com/v2/home)"
-    }
-}
     ]
 }

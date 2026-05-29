@@ -218,33 +218,52 @@ def checkout():
     return jsonify({"message": "checkout complete", "status": "processed"})
 
 # --- 新增路由 1: 用户认证中心（用来在大盘上模拟 401/403 权限异常指标） ---
+# --- 优化后：用户认证中心（支持高级爆破模拟） ---
 @app.route('/user/login', methods=['POST'])
 @observe("/user/login")
 def user_login():
-    if DEGRADED["user_login"]:
-        # 故障模式下，模拟高概率的用户密码错误，返回 401
-        time.sleep(random.uniform(0.1, 0.5))
-        logger.warning("login_failed_bad_credentials", input_username="attacker_demo")
+    # 检查 URL 是否带了 ?attack=true
+    is_attack = request.args.get('attack', 'false').lower() == 'true'
+    
+    if DEGRADED["user_login"] or is_attack:
+        time.sleep(random.uniform(0.05, 0.2)) # 爆破攻击通常很快
+        
+        # 故意生成随机的恶名用户名，模拟真实黑客字典
+        fake_users = ["admin", "root", "guest", "db_user", "administrator"]
+        target_user = random.choice(fake_users)
+        
+        # 打印带有强特征码的结构化安全日志，供 Metric Filter 和 Logs Insights 捕获
+        logger.warning(
+            "login_failed_unauthorized", 
+            security_tag="[SECURITY_ALERT]",
+            input_username=target_user,
+            reason="brute_force_spraying_detected",
+            http_status=401
+        )
         return jsonify({"message": "Unauthorized: invalid credentials"}), 401
     
+    # 正常登录逻辑
     time.sleep(random.uniform(0.02, 0.1))
     logger.info("login_success", user_id=f"user-{random.randint(100, 999)}")
     return jsonify({"message": "login success", "token": "jwt-token-xyz"})
 
-# --- 新增路由 2: 大数据分析中心（用来在大盘上模拟大规模数据提取导致的高内存和高吞吐） ---
+# --- 优化后：大数据分析中心（支持动态吞吐量控制） ---
 @app.route('/analytics/report')
 @observe("/analytics/report")
 def analytics_report():
+    # 允许通过 ?size= 数字来控制处理的数据量，默认随机
+    requested_size = request.args.get('size', type=int)
+    
     if DEGRADED["analytics"]:
-        # 故障模式下，模拟大数据查询产生巨额耗时（例如 6-10 秒）
-        time.sleep(random.uniform(6.0, 10.0))
+        time.sleep(random.uniform(6.0, 10.0)) # 模拟长查询卡死
+        processed_rows = requested_size if requested_size else random.randint(80000, 150000)
     else:
         time.sleep(random.uniform(0.5, 1.5))
+        processed_rows = requested_size if requested_size else random.randint(5000, 50000)
         
-    processed_rows = random.randint(5000, 50000)
     logger.info("analytics_report_generated", rows_extracted=processed_rows)
     
-    # 额外推送一个特定于业务的大数据量专属 Metric：ProcessedRowsCount
+    # 确保推送最新动态行数
     put_metric("ProcessedRowsCount", processed_rows, "/analytics/report")
     
     return jsonify({"report_type": "DataOps Summary", "rows": processed_rows, "status": "generated"})
